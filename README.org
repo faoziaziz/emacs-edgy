@@ -1,0 +1,75 @@
+#+TITLE: Emacs untuk Edgy
+#+AUTHOR: Aziz Amerul Faozi
+#+EMAIL: admin@labseni.com
+
+* Instalasi 
+
+* Melpa
+Gunakan 
+#+BEGIN_SRC bash
+C-x C-f
+#+END_SRC
+untuk openfile. Masukk ke directory ~/ dan edit file .emacs.
+#+BEGIN_SRC bash
+~/.emacs
+#+END_SRC
+masukkan kode ke ~/.emacs kode berikut
+#+BEGIN_SRC lisp
+(require 'package)
+(let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
+                    (not (gnutls-available-p))))
+       (proto (if no-ssl "http" "https")))
+  (when no-ssl (warn "\
+Your version of Emacs does not support SSL connections,
+which is unsafe because it allows man-in-the-middle attacks.
+There are two things you can do about this warning:
+1. Install an Emacs version that does support SSL and be safe.
+2. Remove this warning from your init file so you won't see it again."))
+  (add-to-list 'package-archives (cons "melpa" (concat proto "://melpa.org/packages/")) t)
+  ;; Comment/uncomment this line to enable MELPA Stable if desired.  See `package-archive-priorities`
+  ;; and `package-pinned-packages`. Most users will not need or want to do this.
+  ;;(add-to-list 'package-archives (cons "melpa-stable" (concat proto "://stable.melpa.org/packages/")) t)
+  )
+(package-initialize)
+#+END_SRC
+Refresh dahulu emacsnya, lalu install package semisal lsp-mode dengan perintah berikut
+#+BEGIN_SRC bash
+M-x package-refresh-contents
+#+END_SRC
+
+jika muncul error seperti berikut
+#+BEGIN_SRC bash
+Failed to verify signature archive-contents.sig:
+No public key for 066DAFCB81E42C40 created at 2020-03-18T04:05:02+0700 using RSA
+Command output:
+gpg: Signature made Rab 18 Mar 2020 04:05:02  WIB
+gpg:                using RSA key C433554766D3DDC64221BFAA066DAFCB81E42C40
+gpg: Can't check signature: No public key
+#+END_SRC
+gunakaan perintah berikut 
+#+BEGIN_SRC bash
+M-x package-install RET gnu-elpa-keyring-update RET
+#+END_SRC
+atau gunakan perintah gpg secara manual untuk melakukan update keyring
+#+BEGIN_SRC bash
+gpg --homedir ~/.emacs.d/elpa/gnupg --receive-keys 066DAFCB81E42C40
+#+END_SRC
+untuk installasinya. Jika package refresh tidak berhasil maka coba yang diedit 
+adalah
+#+BEGIN_SRC bash
+~/.emacs.d/init.el
+#+END_SRC
+bukan ~/.emacs atau anda bisa copy file ~/.emacs tadi ke ~/.emacs.d/init.el
+#+END_SRC
+Lalu eksekusi package refresh
+#+BEGIN_SRC bash
+M-x package-refresh-contents
+#+END_SRC
+Setelah itu coba install lsp mode dengan perintah berikut
+#+BEGIN_SRC bash
+M-x package-install RET lsp-mode RET
+#+END_SRC
+untuk masukk ke mode lsp-mode caranya tinggal 
+#+BEGIN_SRC bash
+M-x RET lsp-mode RET
+#+BEGIN_SRC
